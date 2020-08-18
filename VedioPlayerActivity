@@ -1,0 +1,96 @@
+package com.sample.vedioclickfromfirebase;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
+import android.os.Bundle;
+
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
+
+import java.util.Objects;
+
+public class VedioPlayerActivity extends AppCompatActivity {
+    PlayerView playerView;
+    SimpleExoPlayer simpleExoPlayer;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        setContentView(R.layout.activity_vedio_player);
+        playerView=findViewById(R.id.exoplayer);
+        showVedio(getIntent().getStringExtra("path_file"));
+    }
+    private void showVedio(String filepath){
+        simpleExoPlayer= ExoPlayerFactory.newSimpleInstance(VedioPlayerActivity.this);
+        playerView.setPlayer(simpleExoPlayer);
+        DataSource.Factory datasource=new DefaultDataSourceFactory(VedioPlayerActivity.this, Util.getUserAgent(VedioPlayerActivity.this,getString(R.string.app_name)));
+        MediaSource vediosource=new ExtractorMediaSource.Factory(datasource).createMediaSource(Uri.parse(filepath));
+        simpleExoPlayer.prepare(vediosource);
+        simpleExoPlayer.setPlayWhenReady(true);
+
+
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(simpleExoPlayer!=null){
+            simpleExoPlayer.release();
+        }
+
+        if(simpleExoPlayer!=null){
+            if(simpleExoPlayer.isLoading()) {
+                simpleExoPlayer.release();
+            }
+        }
+        if(simpleExoPlayer!=null){
+            if(simpleExoPlayer.isPlayingAd()) {
+                simpleExoPlayer.release();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(simpleExoPlayer!=null){
+            simpleExoPlayer.release();
+        }
+
+        if(simpleExoPlayer!=null){
+            if(simpleExoPlayer.isLoading()) {
+                simpleExoPlayer.release();
+            }
+        }
+        if(simpleExoPlayer!=null){
+            if(simpleExoPlayer.isPlayingAd()) {
+                simpleExoPlayer.release();
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(simpleExoPlayer!=null){
+            simpleExoPlayer.release();
+        }
+
+        if(simpleExoPlayer!=null){
+            if(simpleExoPlayer.isLoading()) {
+                simpleExoPlayer.release();
+            }
+        }
+        if(simpleExoPlayer!=null){
+            if(simpleExoPlayer.isPlayingAd()) {
+                simpleExoPlayer.release();
+            }
+        }
+    }
+}
